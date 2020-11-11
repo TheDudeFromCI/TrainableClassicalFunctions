@@ -1,4 +1,5 @@
 from Connection import *
+from Function import *
 from random import random
 
 class Network:
@@ -13,17 +14,17 @@ class Network:
   def randomize_connection_delta(self):
     pass
 
-def create_network(functions, inputFunc, outputFunc, hiddenLayers):
+def create_network(functions, inputParams, outputParams, hiddenLayers):
   connections = []
 
   # Build layer map
   layers = []
-  layers.append([inputFunc.clone()])
+  layers.append([Function([], inputParams, lambda inputs: inputs)])
   for _ in range(hiddenLayers):
     layer = []
     for func in functions: layer.append(func.clone())
     layers.append(layer)
-  layers.append([outputFunc.clone()])
+  layers.append([Function(outputParams, [], lambda inputs: inputs)])
 
   # Unify function list
   realFuncList = []

@@ -3,18 +3,6 @@ from libs.Math import *
 from Function import *
 from Network import *
 
-def InputFunction():
-  def handler(inputs):
-    return inputs
-  
-  return Function([], [NumberType, NumberType], handler)
-
-def OutputFunction():
-  def handler(inputs):
-    return inputs
-
-  return Function([NumberType], [], handler)
-
 def build_function_list():
   return [
     AddFunction(),
@@ -26,6 +14,9 @@ def build_function_list():
 
 if __name__ == '__main__':
   functions = build_function_list()
-  network = create_network(functions, InputFunction(), OutputFunction(), 5)
+  inputParams = [NumberType, NumberType]
+  outputParams = [NumberType]
+  hiddenLayers = 5
+  network = create_network(functions, inputParams, outputParams, hiddenLayers)
 
   print(len(network.connections))
