@@ -1,3 +1,4 @@
 {
-    "nixEnvSelector.nixShellConfig": "${workspaceRoot}/.vscode/default.nix"
+    "nixEnvSelector.nixShellConfig": "${workspaceRoot}/.vscode/default.nix",
+    "python.pythonPath": "/nix/store/505a88g38imdsjnaggxibhp335wzpq31-python3-3.8.5-env/bin/python"
 }
