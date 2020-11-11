@@ -138,7 +138,7 @@ def convert_to_code(network):
     def __str__(self):
 
       if self.function is network.input:
-        line = 'functionC'
+        line = 'function('
         line += ', '.join(str(v) for v in self.outputVars)
         line += '):'
         return line

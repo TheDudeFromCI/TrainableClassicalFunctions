@@ -1,8 +1,7 @@
 from Function import *
 from Port import *
 from ObjectType import *
-
-NumberType = ObjectType('Number')
+from libs.Core import *
 
 def AddFunction():
   def handler(inputs):

@@ -3,4 +3,4 @@ class ObjectType:
     self.name = name
 
   def can_connect_to(self, objectType):
-    return self.name == objectType.name
+    return self.name == objectType.name or objectType.name == 'Any'
