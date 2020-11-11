@@ -19,4 +19,6 @@ if __name__ == '__main__':
   hiddenLayers = 5
   network = create_network(functions, inputParams, outputParams, hiddenLayers)
 
+  print(convert_to_code(network))
+
   print(network.run([2, 4]))

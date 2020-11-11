@@ -1,11 +1,12 @@
 from Port import *
 
 class Function:
-  def __init__(self, inputs, outputs, handlerFunc):
+  def __init__(self, inputs, outputs, handlerFunc, name='UnnamedFunction'):
     self.inputs = [Port(self, True, 0, objType) for objType in inputs]
     self.outputs = [Port(self, False, 0, objType) for objType in outputs]
     self.handler = handlerFunc
     self.inputGroups = [[]] * len(inputs)
+    self.name = name
     self.__temp = None
 
     for i in range(len(self.inputs)): self.inputs[i].index = i
@@ -18,9 +19,9 @@ class Function:
   def clone(self):
     inputs = [p.objectType for p in self.inputs]
     outputs = [p.objectType for p in self.outputs]
-    return Function(inputs, outputs, self.handler)
+    return Function(inputs, outputs, self.handler, self.name)
 
-  def __get_port_conn(self, port):
+  def get_port_conn(self, port):
     c = None
     for conn in self.inputGroups[port]:
       if c == None or conn.value > c.value:
@@ -36,7 +37,7 @@ class Function:
 
     inputParams = []
     for port in range(len(self.inputs)):
-      conn = self.__get_port_conn(port)
+      conn = self.get_port_conn(port)
       result = conn.parent.function.resolve()
       inputParams.append(result[conn.parent.index])
 
