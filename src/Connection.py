@@ -24,3 +24,7 @@ class Connection:
       sib.weight += value
     
     self.normalize_weights()
+
+  @property
+  def value(self):
+    return self.weight + self.delta

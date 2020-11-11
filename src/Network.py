@@ -3,13 +3,19 @@ from Function import *
 from random import random
 
 class Network:
-  def __init__(self, connections, inputFunc, outputFunc):
+  def __init__(self, connections, functionList, inputFunc, outputFunc):
     self.connections = connections
+    self.functionList = functionList
     self.input = inputFunc
     self.output = outputFunc
 
   def run(self, inputs):
-    pass
+    self.input.run(inputs)
+    result = self.output.resolve()
+
+    for func in self.functionList: func.clear_temp()
+
+    return result
 
   def randomize_connection_delta(self):
     pass
@@ -17,14 +23,17 @@ class Network:
 def create_network(functions, inputParams, outputParams, hiddenLayers):
   connections = []
 
+  inputFunc = Function([], inputParams, lambda inputs: inputs)
+  outputFunc = Function(outputParams, [], lambda inputs: inputs)
+
   # Build layer map
   layers = []
-  layers.append([Function([], inputParams, lambda inputs: inputs)])
+  layers.append([inputFunc])
   for _ in range(hiddenLayers):
     layer = []
     for func in functions: layer.append(func.clone())
     layers.append(layer)
-  layers.append([Function(outputParams, [], lambda inputs: inputs)])
+  layers.append([outputFunc])
 
   # Unify function list
   realFuncList = []
@@ -32,11 +41,11 @@ def create_network(functions, inputParams, outputParams, hiddenLayers):
 
   # Initialize all connections
   for layerIndex in range(len(layers)):
-    for outputFunc in layers[layerIndex]:
-      for outputPort in outputFunc.outputs:
+    for outputF in layers[layerIndex]:
+      for outputPort in outputF.outputs:
         for futureLayerIndex in range(layerIndex + 1, len(layers)):
-          for inputFunc in layers[futureLayerIndex]:
-            for inputPort in inputFunc.inputs:
+          for inputF in layers[futureLayerIndex]:
+            for inputPort in inputF.inputs:
               if not outputPort.objectType.can_connect_to(inputPort.objectType): continue
               conn = Connection(outputPort, inputPort)
               conn.weight = random()
@@ -96,6 +105,7 @@ def create_network(functions, inputParams, outputParams, hiddenLayers):
       conn.siblings.append(pair)
     
     conn.normalize_weights()
+    conn.child.function.inputGroups[conn.child.index] = conn.siblings
   
   # Create the network
-  return Network(connections, inputFunc, outputFunc)
+  return Network(connections, realFuncList, inputFunc, outputFunc)
