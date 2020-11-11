@@ -17,9 +17,6 @@ class Network:
 
     return result
 
-  def randomize_connection_delta(self):
-    pass
-
 def create_network(functions, inputParams, outputParams, hiddenLayers):
   connections = []
 
@@ -48,7 +45,6 @@ def create_network(functions, inputParams, outputParams, hiddenLayers):
             for inputPort in inputF.inputs:
               if not outputPort.objectType.can_connect_to(inputPort.objectType): continue
               conn = Connection(outputPort, inputPort)
-              conn.weight = random()
               connections.append(conn)
   
   # Trim unusable functions from the list
@@ -111,7 +107,6 @@ def create_network(functions, inputParams, outputParams, hiddenLayers):
   return Network(connections, realFuncList, inputFunc, outputFunc)
 
 def convert_to_code(network):
-
   varIndex = 0
 
   class CodeVar:

@@ -1,3 +1,4 @@
+from TrainingSupervisor import *
 from ObjectType import *
 from libs.Math import *
 from libs.Core import *
@@ -23,7 +24,19 @@ if __name__ == '__main__':
   outputParams = [NumberType]
   hiddenLayers = 5
   network = create_network(functions, inputParams, outputParams, hiddenLayers)
-
   print(convert_to_code(network))
 
-  print(network.run([2, 4, False]))
+  trainer = TrainingSupervisor(network)
+  trainer.connectionShuffle = 1.0
+  trainer.learningRate = 0.05
+  trainer.trainingSamples.append([[2, 4, False], [16]])
+
+  for i in range(10000):
+    trainer.do_training_itr()
+    print("GENERATION " + str(i))
+    print(convert_to_code(network))
+
+    try:
+      print(network.run([2, 4, False]))
+    except:
+      print('[Error]')
